@@ -5,10 +5,10 @@
     <form method="POST" action="">
         {% csrf_token %}
         <label>Username</label>
-        <input type="text" value="username" placeholder="Enter Username" />
+        <input type="text" name="Username" placeholder="Enter Username" />
         
         <label>Password</label>
-        <input type="password" value="password" placeholder="Enter Password" />
+        <input type="password" name="Password" placeholder="Enter Password" />
 
 
         <input type="submit" value="Login" />
