@@ -17,27 +17,29 @@ from django.contrib.auth.decorators import login_required
 
 
 def loginPage(request):
+    page = 'login'
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
 
         try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
+            user = User.objects.get(email=email)
+        except:
             messages.error(request, 'User does not exist')
-            # Redirect to the login page with an error message
-            return redirect('login')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
+
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'Invalid username or password')
-            # Redirect to the login page with an error message
-            return redirect('login')
+            messages.error(request, 'Username OR password does not exit')
 
-    return render(request, 'base/login_register.html')
+    context = {'page': page}
+    return render(request, 'base/login_register.html', context)
 
 
 def logoutUser(request):
